@@ -9,6 +9,7 @@ const app = express();
 
 // Router 
 const bannerRouter = require('./routers/server/banner.router.js');
+const tableRouter = require('./routers/server/table.router.js');
 
 // express-handlebars
 app.engine("handlebars", exphbs.engine({ extname: 'handlebars' }));
@@ -48,6 +49,7 @@ app.get('/', (req, res) => {
 
 // Router 
 app.use('/', bannerRouter);
+app.use('/', tableRouter);
 
 const port = 3000;
 app.listen(port, () => {
