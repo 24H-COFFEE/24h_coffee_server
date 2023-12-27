@@ -11,7 +11,7 @@ const loginController = async (req, res) => {
         const results = await model.loginModel(userName, password)
 
         if (results.length > 0) {
-            res.json({ status: "success" })
+            res.json({ status: "success", user: results[0] })
         } else {
             res.json({ status: "not found" })
         }
