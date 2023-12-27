@@ -11,6 +11,8 @@ const app = express();
 const bannerRouter = require('./routers/server/banner.router.js');
 const tableRouter = require('./routers/server/table.router.js');
 const categoryRouter = require('./routers/server/catgory.router.js');
+const productRouter = require('./routers/server/product.router.js');
+
 
 
 // express-handlebars
@@ -53,6 +55,7 @@ app.get('/', (req, res) => {
 app.use('/', bannerRouter);
 app.use('/', tableRouter);
 app.use('/', categoryRouter);
+app.use('/', productRouter);
 
 const port = 3000;
 app.listen(port, () => {
