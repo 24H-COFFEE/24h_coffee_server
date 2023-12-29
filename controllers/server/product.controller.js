@@ -138,7 +138,7 @@ const updateProduct = async (req, res) => {
 
       const updateProductResult = await productModel.updateProduct(product);
       if (updateProductResult && updateProductResult.changedRows > 0) {
-        req.flash('success', 'Cập nhật sản phẩm mới thành công');
+        req.flash('success', 'Cập nhật sản phẩm thành công');
       } else {
         req.flash('warning', 'Không có cập nhật nào');
       }

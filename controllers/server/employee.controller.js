@@ -38,6 +38,12 @@ const renderPageInsertEmployee = async (req, res) => {
 }
 
 const insertEmployee = async (req, res) => {
+  const user = req.session.user;
+  const infoPage = {
+    title: 'Thêm nhân viên',
+    avatar: user.anhDaiDien,
+    fullname: user.hoVaTen
+  }
   try {
     upload(req, res, async (err) => {
       const { username, password, fullname, phoneNumber, dateOfBirth, gender } = req.body;
@@ -53,7 +59,8 @@ const insertEmployee = async (req, res) => {
           fullname,
           phoneNumber,
           dateOfBirth,
-          gender
+          gender,
+          infoPage
         });
         return;
       }
@@ -66,7 +73,8 @@ const insertEmployee = async (req, res) => {
           fullname,
           phoneNumber,
           dateOfBirth,
-          gender
+          gender,
+          infoPage
         });
         return;
       }
@@ -82,7 +90,7 @@ const insertEmployee = async (req, res) => {
           phoneNumber,
           dateOfBirth,
           gender,
-          urlImage
+          urlImage,
         }
         await employeeModel.insertEmployee(employee);
         req.flash('success', 'Thêm thành công');
