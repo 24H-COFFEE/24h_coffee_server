@@ -4,7 +4,7 @@
 <head>
 	<!-- Basic Page Info -->
 	<meta charset="utf-8">
-	<title>24H - Coffee</title>
+	<title>{{infoPage.title}}</title>
 
 	<!-- Mobile Specific Metas -->
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -47,10 +47,10 @@
 					<a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown">
 						<span class="user-icon">
 							<img
-								src="https://media.cnn.com/api/v1/images/stellar/prod/150929101049-black-coffee-stock.jpg?q=w_1110,c_fill"
+								src="{{infoPage.avatar}}"
 								alt="">
 						</span>
-						<span class="user-name">Quản trị viên</span>
+						<span class="user-name">{{infoPage.fullname}}</span>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
 						<a class="dropdown-item" href="/account"><i class="dw dw-user1"></i> Thông tin tài khoản</a>

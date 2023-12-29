@@ -44,10 +44,12 @@ const signOut = async (req, res) => {
 const renderPageAccountSetting = async (req, res) => {
   try {
     const user = req.session.user;
-    console.log("🚀 ~ file: auth.controller.js:41 ~ renderPageAccountSetting ~ user:", user)
-    if (user) {
-      res.render('accountSetting', { user });
+    const infoPage = {
+      title: 'Cài đặt tài khoản',
+      avatar: user.anhDaiDien,
+      fullname: user.hoVaTen
     }
+    res.render('accountSetting', { user, infoPage});
   } catch (error) {
     console.error('Render page account setting falied', error);
   }

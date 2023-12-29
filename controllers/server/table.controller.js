@@ -3,9 +3,15 @@ const arrayHelpers = require('../../helpers/array-helpers.js');
 
 const renderPageTable = async (req, res) => {
   try {
+    const user = req.session.user;
+    const infoPage = {
+      title: 'Quản lý bàn',
+      avatar: user.anhDaiDien,
+      fullname: user.hoVaTen
+    }
     const tables = await tableModel.getTables();
     const tablesReversed = arrayHelpers.reverseArray(tables);
-    res.render('table', { tables: tablesReversed });
+    res.render('table', { tables: tablesReversed, infoPage});
   } catch (error) {
     console.error('Render page table failed', error);
   }

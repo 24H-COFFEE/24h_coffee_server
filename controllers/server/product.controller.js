@@ -10,9 +10,15 @@ const upload = multer({ storage: multer.memoryStorage() }).single('image');
 
 const renderPageProduct = async (req, res) => {
   try {
+    const user = req.session.user;
+    const infoPage = {
+      title: 'Quản lý sản phẩm',
+      avatar: user.anhDaiDien,
+      fullname: user.hoVaTen
+    }
     const products = await productModel.getProducts();
     const productsReversed = arrayHelpers.reverseArray(products);
-    res.render('product', { products: productsReversed });
+    res.render('product', { products: productsReversed, infoPage });
   } catch (error) {
     console.error('Render page product failed', error);
   }
@@ -20,14 +26,26 @@ const renderPageProduct = async (req, res) => {
 
 const renderPageInsertProduct = async (req, res) => {
   try {
+    const user = req.session.user;
+    const infoPage = {
+      title: 'Thêm sản phẩm',
+      avatar: user.anhDaiDien,
+      fullname: user.hoVaTen
+    }
     const categories = await categoryModel.getCategories();
-    res.render('insertProduct', { categories });
+    res.render('insertProduct', { categories, infoPage });
   } catch (error) {
     console.error('Render page insert product failed', error);
   }
 }
 
 const insertProduct = async (req, res) => {
+  const user = req.session.user;
+  const infoPage = {
+    title: 'Thêm sản phẩm',
+    avatar: user.anhDaiDien,
+    fullname: user.hoVaTen
+  }
   try {
     upload(req, res, async (err) => {
       const { productName, productPrice, productStatus, categoryID } = req.body;
@@ -40,14 +58,14 @@ const insertProduct = async (req, res) => {
       if (isProductNameExist) {
         const categories = await categoryModel.getCategories();
         const warning = 'Tên sản phẩm đã tồn tại';
-        res.render('insertProduct', { categories, productName, productPrice, warning });
+        res.render('insertProduct', { categories, productName, productPrice, warning, infoPage });
         return;
       }
 
       if (!req.file) {
         const categories = await categoryModel.getCategories();
         const warning = 'Vui lòng chọn ảnh sản phẩm trước khi thêm';
-        res.render('insertProduct', { categories, productName, productPrice, warning });
+        res.render('insertProduct', { categories, productName, productPrice, warning, infoPage });
       } else {
         const imageBuffer = req.file.buffer;
         const urlProductImage = await cloudinary.uploadImageToCloudinary(imageBuffer);
@@ -77,10 +95,16 @@ const insertProduct = async (req, res) => {
 const renderPageUpdateProduct = async (req, res) => {
   const productID = req.params.productID;
   try {
+    const user = req.session.user;
+    const infoPage = {
+      title: 'Cập nhật sản phẩm',
+      avatar: user.anhDaiDien,
+      fullname: user.hoVaTen
+    }
     const product = await productModel.getProductById(productID);
     if (product) {
       const categories = await categoryModel.getCategories();
-      res.render('updateProduct', { categories, product });
+      res.render('updateProduct', { categories, product, infoPage });
     } else {
       req.flash('error', 'Hệ thống xảy ra lỗi');
       res.redirect('back');
