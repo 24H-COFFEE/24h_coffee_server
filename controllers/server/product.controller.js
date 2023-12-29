@@ -122,7 +122,7 @@ const updateProduct = async (req, res) => {
       res.redirect('back');
     });
   } catch (error) {
-    console.error('Insert product failed', error);
+    console.error('Update product failed', error);
   }
 }
 

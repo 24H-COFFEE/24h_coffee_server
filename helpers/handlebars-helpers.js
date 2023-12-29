@@ -34,7 +34,6 @@ Handlebars.registerHelper('formatDate', function (date) {
 });
 
 Handlebars.registerHelper('reverseDate', function (dateString) {
-    console.log("🚀 ~ file: handlebars-helpers.js:37 ~ dateString:", dateString)
     // Reverse the format from 'dd/mm/yyyy' to 'YYYY-MM-DD'
     const formattedDate = moment(dateString, 'DD/MM/YYYY').format('YYYY-MM-DD');
     const reversedDate = formattedDate;

@@ -22,6 +22,7 @@ const tableRouter = require('./routers/server/table.router.js');
 const categoryRouter = require('./routers/server/catgory.router.js');
 const productRouter = require('./routers/server/product.router.js');
 const employeeRouter = require('./routers/server/employee.router.js');
+const authRouter = require('./routers/server/auth.router.js');
 
 // express-handlebars
 app.engine("handlebars", exphbs.engine({ extname: 'handlebars' }));
@@ -58,7 +59,6 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
   res.render('home');
 })
-
 // Router 
 app.use("/api", accountClient)
 app.use("/api", bannerClient)
@@ -72,6 +72,7 @@ app.use('/', tableRouter);
 app.use('/', categoryRouter);
 app.use('/', productRouter);
 app.use('/', employeeRouter);
+app.use('/', authRouter);
 
 const port = 3000;
 app.listen(port, () => {
