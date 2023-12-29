@@ -12,7 +12,7 @@ const bannerRouter = require('./routers/server/banner.router.js');
 const tableRouter = require('./routers/server/table.router.js');
 const categoryRouter = require('./routers/server/catgory.router.js');
 const productRouter = require('./routers/server/product.router.js');
-
+const employeeRouter = require('./routers/server/employee.router.js');
 
 
 // express-handlebars
@@ -56,6 +56,7 @@ app.use('/', bannerRouter);
 app.use('/', tableRouter);
 app.use('/', categoryRouter);
 app.use('/', productRouter);
+app.use('/', employeeRouter);
 
 const port = 3000;
 app.listen(port, () => {
