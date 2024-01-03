@@ -9,9 +9,16 @@ const upload = multer({ storage: multer.memoryStorage() }).single('image');
 
 const renderPageBanner = async (req, res) => {
   try {
+    const user = req.session.user;
+    const infoPage = {
+      title: 'Quản lý banner',
+      avatar: user.anhDaiDien,
+      fullname: user.hoVaTen
+    }
+
     const banners = await bannerModel.getBanners();
     const bannersReversed = arrayHelpers.reverseArray(banners);
-    res.render('banner', { banners: bannersReversed });
+    res.render('banner', { banners: bannersReversed, infoPage});
   } catch (error) {
     console.error('Render page banner failed', error);
   }

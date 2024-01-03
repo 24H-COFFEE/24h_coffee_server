@@ -4,9 +4,15 @@ const arrayHelpers = require('../../helpers/array-helpers.js');
 
 const renderPageCategory = async (req, res) => {
   try {
+    const user = req.session.user;
+    const infoPage = {
+      title: 'Quản lý danh mục',
+      avatar: user.anhDaiDien,
+      fullname: user.hoVaTen
+    }
     const categories = await categoryModel.getCategories();
     const categoriesReversed = arrayHelpers.reverseArray(categories);
-    res.render('category', { categories: categoriesReversed });
+    res.render('category', { categories: categoriesReversed, infoPage});
   } catch (error) {
     console.error('Render page category failed', error);
   }
