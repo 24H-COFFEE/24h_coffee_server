@@ -31,7 +31,11 @@
                   Bàn {{this.soThuTu}}
                 </td>
                 <td>
+                  {{#equal this.ngayThanhToan null}}
+                  Chưa thanh toán
+                  {{else}}
                   {{formatDate this.ngayThanhToan}}
+                  {{/equal}}
                 </td>
                 <td>
                   {{#equal this.trangThaiThanhToan 'Chưa thanh toán'}}

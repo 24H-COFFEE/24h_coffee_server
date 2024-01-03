@@ -12,9 +12,21 @@
           <div class="row pb-30">
             <div class="col-md-6">
               <h5 class="mb-15">{{bill.id}}</h5>
-              <p class="font-14 mb-5">Giờ vào: <strong class="weight-600">{{formatDateTime bill.gioVao}}</strong>
+              <p class="font-14 mb-5">Giờ vào: <strong class="weight-600">
+                  {{#equal bill.gioVao null}}
+                  Chưa xác định
+                  {{else}}
+                  {{formatDate bill.gioVao}}
+                  {{/equal}}
+                </strong>
               </p>
-              <p class="font-14 mb-5">Giờ ra: <strong class="weight-600">{{formatDateTime bill.gioRa}}</strong>
+              <p class="font-14 mb-5">Giờ ra: <strong class="weight-600">
+                  {{#equal bill.gioRa null}}
+                  Chưa xác định
+                  {{else}}
+                  {{formatDate bill.gioRa}}
+                  {{/equal}}
+                </strong>
               </p>
               <p class="font-14 mb-5">Nhân viên phụ trách: <strong class="weight-600">{{bill.hoVaTen}}</strong>
               </p>
@@ -23,7 +35,13 @@
               <h5 class="mb-15">&nbsp;</h5>
               <p class="font-14 mb-5">Số bàn: <strong class="weight-600">{{bill.soThuTu}}</strong></p>
               <p class="font-14 mb-5">Ngày thanh toán: <strong class="weight-600">
-                  {{formatDate bill.ngayThanhToan}}</strong></p>
+                  {{#equal bill.ngayThanhToan null}}
+                  Chưa xác định
+                  {{else}}
+                  {{formatDate bill.ngayThanhToan}}
+                  {{/equal}}
+                </strong>
+              </p>
               <p class="font-14 mb-5">Thanh toán:
                 {{#equal bill.trangThaiThanhToan 'Chưa thanh toán'}}
                 <strong class="weight-600" style="color: red;">Chưa thanh toán</strong>
@@ -46,14 +64,13 @@
                 {{#each billsDetail}}
                 <li class="clearfix" style="align-items: center; display: flex;">
                   <div class="invoice-rate" style="justify-content: center; display: flex;">
-                    <img style="width: 80px; height: 80px;"
-                      src="{{this.anhSanPham}}"
-                      alt="Hình ảnh" />
+                    <img style="width: 80px; height: 80px;" src="{{this.anhSanPham}}" alt="Hình ảnh" />
                   </div>
                   <div class="invoice-sub" style="justify-content: center; display: flex;">{{this.tenSanPham}}</div>
                   <div class="invoice-hours" style="justify-content: center; display: flex;">x{{this.soLuong}}</div>
-                  <div class="invoice-subtotal" style="justify-content: center; display: flex;"><a href="/products/update/{{this.sanPhamID}}"
-                      style="font-size: 14px; color: blue;">Chi tiết sản phẩm</a>
+                  <div class="invoice-subtotal" style="justify-content: center; display: flex;"><a
+                      href="/products/update/{{this.sanPhamID}}" style="font-size: 14px; color: blue;">Chi tiết sản
+                      phẩm</a>
                   </div>
                 </li>
                 {{/each}}
@@ -68,10 +85,18 @@
                 <ul>
                   <li class="clearfix">
                     <div class="invoice-sub">
+                      {{#equal bill.ngayThanhToan null}}
+                      Chưa xác định
+                      {{else}}
                       {{formatDate bill.ngayThanhToan}}
+                      {{/equal}}
                     </div>
                     <div class="invoice-sub" style="color: red; font-weight: 600; font-size: 17px;">
+                      {{#equal bill.thanhTien null}}
+                      Chưa xác định
+                      {{else}}
                       {{formatCurrency bill.thanhTien}}
+                      {{/equal}}
                     </div>
                   </li>
                 </ul>
