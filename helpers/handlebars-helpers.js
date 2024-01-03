@@ -33,6 +33,12 @@ Handlebars.registerHelper('formatDate', function (date) {
     return new Handlebars.SafeString(formattedDate);
 });
 
+// Chuyển đổi date thành định dạng ngày 'dd/mm/yyyy'
+Handlebars.registerHelper('formatDateTime', function (date) {
+    const formattedDate = moment(date).format('DD/MM/YYYY HH:mm:ss');
+    return new Handlebars.SafeString(formattedDate);
+});
+
 Handlebars.registerHelper('reverseDate', function (dateString) {
     // Reverse the format from 'dd/mm/yyyy' to 'YYYY-MM-DD'
     const formattedDate = moment(dateString, 'DD/MM/YYYY').format('YYYY-MM-DD');
