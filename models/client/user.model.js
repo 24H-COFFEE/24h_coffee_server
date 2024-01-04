@@ -18,7 +18,14 @@ const updateUser = async (id, image, fullName) => {
 
 }
 
+//đổi mật khẩu người dùng
+const resetPass = async(id, matKhau) =>{
+    const query = "UPDATE NguoiDung SET matKhau = ? WHERE tenDangNhap = ?";
+    return await connection.queryDatabase(query, [id, matKhau])
+}
+
 module.exports = {
     readUser,
-    updateUser
+    updateUser,
+    resetPass
 };

@@ -27,7 +27,19 @@ const updateUser = async (req, res) => {
 
 }
 
+const resetPass = async(req, res) => {
+    try {
+        const { id, matKhau } = req.body;
+        const results = await model.resetPass(id, matKhau)
+        res.json({status: "SUCCESS", results});
+    } catch (error) {
+        console.log(error)
+        res.json({status: "ERROR", error});
+    }
+}
+
 module.exports = {
     readUser,
-    updateUser
+    updateUser,
+    resetPass
 }
