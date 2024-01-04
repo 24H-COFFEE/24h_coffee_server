@@ -1,18 +1,14 @@
 const model = require('../../models/client/bill.model')
 
-// thêm hóa đơn
+// thêm hóa đơn và cập nhật trạng thái bàn
 const insertBill = async (req, res) => {
     try {
 
-        const { id, timeOut, datePayment, tableID, userID } = req.body
+        const { id, tableID, userID } = req.body
 
-        const results = await model.insertBillModel(id, timeOut, datePayment, tableID, userID)
+        const results = await model.insertBillModel(id, tableID, userID)
 
-        if (results.affectedRows > 0) {
-            res.json({ status: "success" })
-        } else {
-            res.json({ status: "error" })
-        }
+        res.json(results)
 
     } catch (error) {
         res.status(500).json({ status: "error", error: error.message });
@@ -25,6 +21,8 @@ const readBillByTable = async (req, res) => {
 
         const { tableID } = req.params
 
+        console.log(tableID)
+
         if (!tableID) {
             return res.status(400).json({ status: "error", message: "parameter is missing or empty." });
         }
@@ -35,7 +33,7 @@ const readBillByTable = async (req, res) => {
         if (results.length > 0) {
             res.json({ status: "success", tableBill: results[0] })
         } else {
-            res.json({ status: "error" })
+            res.json({ status: "error length" })
         }
 
     } catch (error) {
@@ -87,9 +85,25 @@ const insertBillDetail = async (req, res) => {
         res.status(500).json({ status: "error", error: error.message });
     }
 }
+
+// cập nhật hóa đơn và trạng thái bàn
+const updateBill = async (req, res) => {
+    try {
+
+        const { billId, tableId, timeOut, datePayment } = req.body
+
+        const results = await model.updateStatusBillModel(billId, tableId, timeOut, datePayment)
+
+        res.json(results)
+
+    } catch (error) {
+        res.status(500).json({ status: "error", error: error.message });
+    }
+}
 module.exports = {
     insertBill,
     readBillByTable,
     readBillDetail,
-    insertBillDetail
+    insertBillDetail,
+    updateBill
 }

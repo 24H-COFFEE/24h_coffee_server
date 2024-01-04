@@ -9,4 +9,6 @@ router.get("/table/bill/:tableID", controller.readBillByTable)
 
 router.get("/detail/bills/:billID", controller.readBillDetail)
 
+router.post("/update/bill", controller.updateBill)
+
 module.exports = router

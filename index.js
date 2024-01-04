@@ -10,7 +10,7 @@ const categoryClient = require('./routers/client/category.router')
 const productClient = require('./routers/client/product.router')
 const tableClient = require('./routers/client/table.router')
 const billClient = require('./routers/client/bill.router')
-// const notificationClient = require('./routers/client/notification.router')
+const notificationClient = require('./routers/client/notification.router')
 
 // express-handlebars
 app.engine("handlebars", exphbs.engine({ extname: 'handlebars', defaultLayout: null }));
@@ -33,7 +33,7 @@ app.use("/api", categoryClient)
 app.use("/api", productClient)
 app.use("/api", tableClient)
 app.use("/api", billClient)
-// app.use("/api", notificationClient)
+app.use("/api", notificationClient)
 
 const port = 3000;
 app.listen(port, () => {
