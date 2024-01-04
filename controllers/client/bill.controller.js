@@ -21,8 +21,6 @@ const readBillByTable = async (req, res) => {
 
         const { tableID } = req.params
 
-        console.log(tableID)
-
         if (!tableID) {
             return res.status(400).json({ status: "error", message: "parameter is missing or empty." });
         }
