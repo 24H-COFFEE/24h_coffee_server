@@ -46,7 +46,11 @@
                   {{/equal}}
                 </td>
                 <td>
+                  {{#equal this.thanhTien null}}
+                  Chưa thanh toán
+                  {{else}}
                   {{formatCurrency this.thanhTien}}
+                  {{/equal}}
                 </td>
                 <td>
                   <span class="badge badge-pill badge-warning">{{this.hoVaTen}}</span>
