@@ -64,8 +64,31 @@ const insertNotification = async (req, res) => {
     }
 }
 
+// xóa thông báo
+const deletetNotification = async (req, res) => {
+    try {
+
+        const { id } = req.params
+
+        if (!id) {
+            return res.status(400).json({ status: "error", message: "parameter is missing or empty." });
+        }
+        const results = await model.deleteNotificationModel(id)
+
+        if (results.affectedRows > 0) {
+            res.json({ status: "success" })
+        } else {
+            res.json({ status: "error" })
+        }
+
+    } catch (error) {
+        res.status(500).json({ status: "error", error: error.message });
+    }
+}
+
 module.exports = {
     readNotification,
     updateNotification,
-    insertNotification
+    insertNotification,
+    deletetNotification
 }

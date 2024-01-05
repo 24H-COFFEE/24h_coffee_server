@@ -19,9 +19,17 @@ const insertNotificationModel = async (statusSee, content, userId) => {
     return await database.queryDatabase(query, [statusSee, content, userId])
 }
 
+// tương tác với database , xóa thông báo
+const deleteNotificationModel = async (id) => {
+    const query = "DELETE FROM ThongBao WHERE id = ?"
+    return await database.queryDatabase(query, [id])
+}
+
+
 
 module.exports = {
     readNotificationModel,
     updateNotificationModel,
-    insertNotificationModel
+    insertNotificationModel,
+    deleteNotificationModel
 }
