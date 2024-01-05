@@ -19,7 +19,6 @@ const renderPageBill = async (req, res) => {
 
 const renderPageBillDetail = async (req, res) => {
   const billID = req.params.billID;
-  console.log("🚀 ~ file: bill.controller.js:22 ~ renderPageBillDetail ~ billID:", billID)
   try {
     const user = req.session.user;
     const infoPage = {
