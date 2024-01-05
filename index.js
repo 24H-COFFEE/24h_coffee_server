@@ -15,6 +15,7 @@ const productClient = require('./routers/client/product.router')
 const tableClient = require('./routers/client/table.router')
 const billClient = require('./routers/client/bill.router')
 const notificationClient = require('./routers/client/notification.router')
+const userClient = require('./routers/client/user.router')
 
 // Router admin
 const bannerRouter = require('./routers/server/banner.router.js');
@@ -66,6 +67,7 @@ app.use("/api", productClient)
 app.use("/api", tableClient)
 app.use("/api", billClient)
 app.use("/api", notificationClient)
+app.use("/api", userClient)
 
 app.use('/', bannerRouter);
 app.use('/', tableRouter);

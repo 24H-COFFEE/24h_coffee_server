@@ -88,9 +88,11 @@ const insertBillDetail = async (req, res) => {
 const updateBill = async (req, res) => {
     try {
 
-        const { billId, tableId, timeOut, datePayment } = req.body
+        const { billId, tableId, timeOut, datePayment, intoMoney } = req.body
 
-        const results = await model.updateStatusBillModel(billId, tableId, timeOut, datePayment)
+        console.log(billId, tableId, timeOut, datePayment, intoMoney)
+
+        const results = await model.updateStatusBillModel(billId, tableId, timeOut, datePayment, intoMoney)
 
         res.json(results)
 
