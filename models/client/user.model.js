@@ -1,11 +1,11 @@
-const connection = require("../../database/database.js")
+const database = require("../../database/database.js")
 
 // lấy thông tin người dùng theo id
 const readUser = async (id) => {
 
     const query = "SELECT * FROM nguoidung WHERE tenDangNhap = ?";
 
-    return await connection.queryDatabase(query, [id])
+    return await database.queryDatabase(query, [id])
 
 }
 
@@ -14,14 +14,45 @@ const updateUser = async (id, image, fullName) => {
 
     const query = "UPDATE NguoiDung SET hoVaTen = ?, anhDaiDien = ? WHERE tenDangNhap = ?";
 
-    return await connection.queryDatabase(query, [fullName, image, id])
+    return await database.queryDatabase(query, [fullName, image, id])
 
 }
 
 //đổi mật khẩu người dùng
-const resetPass = async(id, matKhau) =>{
-    const query = "UPDATE NguoiDung SET matKhau = ? WHERE tenDangNhap = ?";
-    return await connection.queryDatabase(query, [id, matKhau])
+const resetPass = async (userName, password) => {
+    const queryUpdate = "UPDATE NguoiDung SET matKhau = ? WHERE tenDangNhap = ?";
+
+    const querySelect = "SELECT * FROM NguoiDung WHERE tenDangNhap = ?";
+
+    try {
+        // Bắt đầu giao dịch
+        await database.queryDatabase("START TRANSACTION");
+
+        const results = await database.queryDatabase(queryUpdate, [password, userName])
+
+        if (results.affectedRows > 0) {
+
+            const results1 = await database.queryDatabase(querySelect, [userName])
+
+            if (results1.length > 0) {
+                await database.queryDatabase("COMMIT");
+                // Trả về kết quả thành công
+                return { status: "success", user: results1[0] }
+            }
+
+        } else {
+            // Rollback giao dịch nếu có lỗi
+            await database.queryDatabase("ROLLBACK");
+            // Trả về kết quả lỗi và thông điệp lỗi
+            return { status: "ERROR" };
+        }
+
+    } catch (error) {
+        // Rollback giao dịch nếu có lỗi
+        await database.queryDatabase("ROLLBACK");
+        // Trả về kết quả lỗi và thông điệp lỗi
+        return { status: "ERROR", error };
+    }
 }
 
 module.exports = {

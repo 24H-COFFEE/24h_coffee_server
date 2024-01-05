@@ -1,4 +1,17 @@
 const model = require('../../models/client/user.model')
+const cloudinary = require('../../cloud/cloudinary')
+const multer = require('multer')
+const { CloudinaryStorage } = require('multer-storage-cloudinary')
+
+const strorage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    folder: 'client-image',
+    allowedFormats: ['jpg', 'png', 'jpeg'],
+    transformation: [{ width: 500, height: 500, crop: 'limit' }]
+})
+const upload = multer({
+    storage: strorage
+})
 
 const readUser = async (req, res) => {
 
@@ -14,35 +27,39 @@ const readUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
 
-    try {
-        const { id, image, fullName } = req.body;
-        const results = await model.updateUser(id, image, fullName)
-        res.json({ status: "success", results });
+    const file = req.files['img'][0]
+    res.sen(file)
 
-    } catch (error) {
-        console.log(error)
+    // try {
+    //     const { id, image, fullName } = req.body;
+    //     const results = await model.updateUser(id, image, fullName)
+    //     res.json({ status: "success", results });
 
-        res.json({ status: "error", error });
-    }
+    // } catch (error) {
+    //     console.log(error)
+
+    //     res.json({ status: "error", error });
+    // }
 
 }
 
 const resetPass = async (req, res) => {
 
     try {
-        const { id, matKhau } = req.body;
+        const { userName, password } = req.body;
+        console.log(userName, password)
+        const results = await model.resetPass(userName, password)
 
-        const results = await model.resetPass(id, matKhau)
-
-        res.json({ status: "success", results });
+        res.json(results);
 
     } catch (error) {
-        res.json({ status: "error", error });
+        res.status(500).json({ status: "error", error: error.message });
     }
 }
 
 module.exports = {
     readUser,
     updateUser,
-    resetPass
+    resetPass,
+    upload
 }

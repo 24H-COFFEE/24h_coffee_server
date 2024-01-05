@@ -61,15 +61,15 @@ const insertBillDetailModel = async (quantity, intoMoney, productID, billID) => 
 
 
 // tương tác với database , thực hiện câu lệnh cập nhật lại trạng thái thanh toán hóa đơn và trạng thái bàn
-const updateStatusBillModel = async (billId, tableId, timeOut, datePayment) => {
-    const queryUpdateBill = "UPDATE HoaDon SET gioRa = ?, ngayThanhToan = ?, trangThaiThanhToan = 'Đã thanh toán' WHERE id = ?"
+const updateStatusBillModel = async (billId, tableId, timeOut, datePayment, intoMoney) => {
+    const queryUpdateBill = "UPDATE HoaDon SET gioRa = ?, ngayThanhToan = ?, thanhTien = ?, trangThaiThanhToan = 'Đã thanh toán' WHERE id = ?"
     const queryUpdateTable = "UPDATE Ban SET trangThaiOrder = 'Trống' WHERE id = ?"
 
     try {
         // Bắt đầu giao dịch
         await database.queryDatabase("START TRANSACTION");
 
-        const results = await database.queryDatabase(queryUpdateBill, [timeOut, datePayment, billId])
+        const results = await database.queryDatabase(queryUpdateBill, [timeOut, datePayment, intoMoney, billId])
 
         if (results.affectedRows > 0) {
 
