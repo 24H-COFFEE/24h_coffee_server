@@ -14,7 +14,7 @@ const categoryClient = require('./routers/client/category.router')
 const productClient = require('./routers/client/product.router')
 const tableClient = require('./routers/client/table.router')
 const billClient = require('./routers/client/bill.router')
-// const notificationClient = require('./routers/client/notification.router')
+const notificationClient = require('./routers/client/notification.router')
 
 // Router admin
 const bannerRouter = require('./routers/server/banner.router.js');
@@ -40,8 +40,8 @@ app.use(
 app.use(flash());
 app.use(function (req, res, next) {
   (res.locals.success = req.flash("success")),
-  (res.locals.error = req.flash("error")),
-  (res.locals.warning = req.flash("warning"));
+    (res.locals.error = req.flash("error")),
+    (res.locals.warning = req.flash("warning"));
   next();
 });
 
@@ -65,7 +65,8 @@ app.use("/api", categoryClient)
 app.use("/api", productClient)
 app.use("/api", tableClient)
 app.use("/api", billClient)
-// app.use("/api", notificationClient)
+app.use("/api", notificationClient)
+
 app.use('/', bannerRouter);
 app.use('/', tableRouter);
 app.use('/', categoryRouter);
