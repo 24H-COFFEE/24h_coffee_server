@@ -9,9 +9,15 @@ const upload = multer({ storage: multer.memoryStorage() }).single('image');
 
 const renderPageEmployee = async (req, res) => {
   try {
+    const user = req.session.user;
+    const infoPage = {
+      title: 'Quản lý nhân viên',
+      avatar: user.anhDaiDien,
+      fullname: user.hoVaTen
+    }
     const employees = await employeeModel.getEmployees();
     const employeesReversed = arrayHelpers.reverseArray(employees);
-    res.render('employee', { employees: employeesReversed });
+    res.render('employee', { employees: employeesReversed, infoPage });
   } catch (error) {
     console.error('Render page employee failed', error);
   }
@@ -19,13 +25,25 @@ const renderPageEmployee = async (req, res) => {
 
 const renderPageInsertEmployee = async (req, res) => {
   try {
-    res.render('insertEmployee');
+    const user = req.session.user;
+    const infoPage = {
+      title: 'Thêm nhân viên',
+      avatar: user.anhDaiDien,
+      fullname: user.hoVaTen
+    }
+    res.render('insertEmployee', { infoPage });
   } catch (error) {
     console.error('Render page insert employee failed', error);
   }
 }
 
 const insertEmployee = async (req, res) => {
+  const user = req.session.user;
+  const infoPage = {
+    title: 'Thêm nhân viên',
+    avatar: user.anhDaiDien,
+    fullname: user.hoVaTen
+  }
   try {
     upload(req, res, async (err) => {
       const { username, password, fullname, phoneNumber, dateOfBirth, gender } = req.body;
@@ -41,7 +59,8 @@ const insertEmployee = async (req, res) => {
           fullname,
           phoneNumber,
           dateOfBirth,
-          gender
+          gender,
+          infoPage
         });
         return;
       }
@@ -54,7 +73,8 @@ const insertEmployee = async (req, res) => {
           fullname,
           phoneNumber,
           dateOfBirth,
-          gender
+          gender,
+          infoPage
         });
         return;
       }
@@ -70,7 +90,7 @@ const insertEmployee = async (req, res) => {
           phoneNumber,
           dateOfBirth,
           gender,
-          urlImage
+          urlImage,
         }
         await employeeModel.insertEmployee(employee);
         req.flash('success', 'Thêm thành công');
@@ -94,7 +114,7 @@ const removeEmployee = async (req, res) => {
     } else {
       req.flash('error', 'Xảy ra lỗi khi xoá nhân viên');
     }
-    
+
     res.redirect('back');
   } catch (error) {
     console.error('Remove employee failed', error);

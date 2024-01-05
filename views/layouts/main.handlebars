@@ -4,7 +4,7 @@
 <head>
 	<!-- Basic Page Info -->
 	<meta charset="utf-8">
-	<title>24H - Coffee</title>
+	<title>{{infoPage.title}}</title>
 
 	<!-- Mobile Specific Metas -->
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -23,7 +23,9 @@
 
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-119386393-1"></script>
-
+	
+	{{!-- Chart.js --}}
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<script>
 		window.dataLayer = window.dataLayer || [];
 		function gtag() { dataLayer.push(arguments); }
@@ -47,14 +49,14 @@
 					<a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown">
 						<span class="user-icon">
 							<img
-								src="https://media.cnn.com/api/v1/images/stellar/prod/150929101049-black-coffee-stock.jpg?q=w_1110,c_fill"
+								src="{{infoPage.avatar}}"
 								alt="">
 						</span>
-						<span class="user-name">Quản trị viên</span>
+						<span class="user-name">{{infoPage.fullname}}</span>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-						<a class="dropdown-item" href="profile.html"><i class="dw dw-user1"></i> Thông tin tài khoản</a>
-						<a class="dropdown-item" href="login.html"><i class="dw dw-logout"></i> Đăng xuất</a>
+						<a class="dropdown-item" href="/account"><i class="dw dw-user1"></i> Thông tin tài khoản</a>
+						<a class="dropdown-item" href="/logout"><i class="dw dw-logout"></i> Đăng xuất</a>
 					</div>
 				</div>
 			</div>
@@ -189,7 +191,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="#" class="dropdown-toggle no-arrow">
+						<a href="/bills" class="dropdown-toggle no-arrow">
 							<span class="micon dw dw-notebook"></span><span class="mtext">Quản lý hoá đơn</span>
 						</a>
 					</li>
