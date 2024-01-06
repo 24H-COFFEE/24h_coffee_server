@@ -11,4 +11,10 @@ router.get("/detail/bills/:billID", controller.readBillDetail)
 
 router.post("/update/bill", controller.updateBill)
 
+router.post("/update/quantity/bill", controller.updateQuantityBillDetail)
+
+router.post("/delete/bill/detail", controller.deleteBillDetail)
+
+router.post("/swap/table/bill", controller.swapTableBill)
+
 module.exports = router

@@ -1,17 +1,4 @@
 const model = require('../../models/client/user.model')
-const cloudinary = require('../../cloud/cloudinary')
-const multer = require('multer')
-const { CloudinaryStorage } = require('multer-storage-cloudinary')
-
-const strorage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    folder: 'client-image',
-    allowedFormats: ['jpg', 'png', 'jpeg'],
-    transformation: [{ width: 500, height: 500, crop: 'limit' }]
-})
-const upload = multer({
-    storage: strorage
-})
 
 const readUser = async (req, res) => {
 
@@ -27,19 +14,33 @@ const readUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
 
-    const file = req.files['img'][0]
-    res.sen(file)
+    try {
+        const image = req.file.path
+        const { userName, name, phone, dateOfBirth, sex } = req.body;
 
-    // try {
-    //     const { id, image, fullName } = req.body;
-    //     const results = await model.updateUser(id, image, fullName)
-    //     res.json({ status: "success", results });
+        const results = await model.updateUser(userName, name, phone, dateOfBirth, sex, image)
 
-    // } catch (error) {
-    //     console.log(error)
+        res.json(results);
 
-    //     res.json({ status: "error", error });
-    // }
+    } catch (error) {
+        res.json({ status: "error", error });
+    }
+
+}
+
+
+const updateUserNoFile = async (req, res) => {
+
+    try {
+        const { userName, name, phone, dateOfBirth, sex, image } = req.body;
+
+        const results = await model.updateUser(userName, name, phone, dateOfBirth, sex, image)
+
+        res.json(results);
+
+    } catch (error) {
+        res.json({ status: "error", error });
+    }
 
 }
 
@@ -47,7 +48,7 @@ const resetPass = async (req, res) => {
 
     try {
         const { userName, password } = req.body;
-        console.log(userName, password)
+
         const results = await model.resetPass(userName, password)
 
         res.json(results);
@@ -61,5 +62,5 @@ module.exports = {
     readUser,
     updateUser,
     resetPass,
-    upload
+    updateUserNoFile
 }

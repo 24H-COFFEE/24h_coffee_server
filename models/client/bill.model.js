@@ -36,6 +36,18 @@ const insertBillModel = async (id, tableID, userID) => {
     }
 }
 
+// tương tác với database , thực hiện câu lệnh xóa hóa đơn chi tiết
+const deleteBillDetailModel = async (id) => {
+    const query = "DELETE FROM HoaDonChiTiet WHERE id = ?"
+    return await database.queryDatabase(query, [id])
+}
+
+// tương tác với database , thực hiện câu lệnh  caập nhật số lượng đồ uống hóa đơn chi tiết
+const updateQuantityBillDetailModel = async (id, quantity) => {
+    const query = "UPDATE HoaDonChiTiet SET soLuong = ? WHERE id = ?"
+    return await database.queryDatabase(query, [quantity, id])
+}
+
 // tương tác với database , thực hiện câu lệnh lấy thông tin hóa đơn và bàn
 const readBillByTableIDModel = async (tableID) => {
     const query = "SELECT HoaDon.id, HoaDon.gioVao, Ban.soThuTu, Ban.trangThaiOrder FROM HoaDon " +
@@ -96,10 +108,55 @@ const updateStatusBillModel = async (billId, tableId, timeOut, datePayment, into
     }
 }
 
+
+// tương tác với database , thực hiện câu lệnh cập nhật id bàn
+const swapTableBillModel = async (id, tableIDBill, tableIDTable) => {
+    const query = "UPDATE HoaDon SET banID = ? WHERE id = ?"
+    const queryUpdateBill = "UPDATE Ban SET trangThaiOrder = 'Trống' WHERE id = ?"
+    const queryUpdateTable = "UPDATE Ban SET trangThaiOrder = 'Có khách' WHERE id = ?"
+
+    try {
+        // Bắt đầu giao dịch
+        await database.queryDatabase("START TRANSACTION");
+
+        const results = await database.queryDatabase(query, [tableIDTable, id])
+
+        if (results.affectedRows > 0) {
+
+            const results1 = await database.queryDatabase(queryUpdateBill, [tableIDBill])
+
+            if (results1.affectedRows > 0) {
+
+                const results2 = await database.queryDatabase(queryUpdateTable, [tableIDTable])
+
+                if (results2.affectedRows > 0) {
+                    await database.queryDatabase("COMMIT");
+                    // Trả về kết quả thành công
+                    return { status: "success" }
+                }
+            }
+
+        } else {
+            // Rollback giao dịch nếu có lỗi
+            await database.queryDatabase("ROLLBACK");
+            // Trả về kết quả lỗi và thông điệp lỗi
+            return { status: "ERROR" };
+        }
+
+    } catch (error) {
+        // Rollback giao dịch nếu có lỗi
+        await database.queryDatabase("ROLLBACK");
+        // Trả về kết quả lỗi và thông điệp lỗi
+        return { status: "ERROR", error };
+    }
+}
 module.exports = {
     insertBillModel,
     readBillByTableIDModel,
     readBillDetailModel,
     insertBillDetailModel,
-    updateStatusBillModel
+    updateStatusBillModel,
+    deleteBillDetailModel,
+    updateQuantityBillDetailModel,
+    swapTableBillModel
 }
