@@ -1,5 +1,7 @@
 require('dotenv').config();
 const cloudinary = require('cloudinary').v2;
+const multer = require('multer')
+const { CloudinaryStorage } = require('multer-storage-cloudinary')
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -32,6 +34,19 @@ const uploadImageToCloudinary = (imageBuffer) => {
   });
 };
 
+
+
+const storage = new CloudinaryStorage({
+  cloudinary,
+  allowedFormats: ['jpg', 'png'],
+  params: {
+    folder: '24h_coffee/'
+  }
+});
+
+const uploadCloud = multer({ storage });
+
 module.exports = {
   uploadImageToCloudinary,
+  uploadCloud
 };

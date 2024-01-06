@@ -90,9 +90,62 @@ const updateBill = async (req, res) => {
 
         const { billId, tableId, timeOut, datePayment, intoMoney } = req.body
 
-        console.log(billId, tableId, timeOut, datePayment, intoMoney)
-
         const results = await model.updateStatusBillModel(billId, tableId, timeOut, datePayment, intoMoney)
+
+        res.json(results)
+
+    } catch (error) {
+        res.status(500).json({ status: "error", error: error.message });
+    }
+}
+
+
+// cập nhật số lượng đồ uống
+const updateQuantityBillDetail = async (req, res) => {
+    try {
+
+        const { id, quantity } = req.body
+
+        const results = await model.updateQuantityBillDetailModel(id, quantity)
+
+        if (results.affectedRows > 0) {
+            res.json({ status: "success" })
+        } else {
+            res.json({ status: "error" })
+        }
+
+    } catch (error) {
+        res.status(500).json({ status: "error", error: error.message });
+    }
+}
+
+
+// xóa hóa đơn chi tiết
+const deleteBillDetail = async (req, res) => {
+    try {
+
+        const { id } = req.body
+
+        const results = await model.deleteBillDetailModel(id)
+
+        if (results.affectedRows > 0) {
+            res.json({ status: "success" })
+        } else {
+            res.json({ status: "error" })
+        }
+
+    } catch (error) {
+        res.status(500).json({ status: "error", error: error.message });
+    }
+}
+
+// cập nhật ib bàn
+const swapTableBill = async (req, res) => {
+    try {
+
+        const { id, tableIDBill, tableIDTable } = req.body
+
+        const results = await model.swapTableBillModel(id, tableIDBill, tableIDTable)
 
         res.json(results)
 
@@ -105,5 +158,8 @@ module.exports = {
     readBillByTable,
     readBillDetail,
     insertBillDetail,
-    updateBill
+    updateBill,
+    updateQuantityBillDetail,
+    deleteBillDetail,
+    swapTableBill
 }

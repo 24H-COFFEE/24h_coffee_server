@@ -10,11 +10,41 @@ const readUser = async (id) => {
 }
 
 // cập nhật thông người dùng
-const updateUser = async (id, image, fullName) => {
+const updateUser = async (userName, name, phone, dateOfBirth, sex, image) => {
 
-    const query = "UPDATE NguoiDung SET hoVaTen = ?, anhDaiDien = ? WHERE tenDangNhap = ?";
+    const query = "UPDATE NguoiDung SET hoVaTen = ?, anhDaiDien = ?, dienThoai = ?, ngaySinh = ?, gioiTinh = ? WHERE tenDangNhap = ?";
 
-    return await database.queryDatabase(query, [fullName, image, id])
+    const querySelect = "SELECT * FROM NguoiDung WHERE tenDangNhap = ?";
+
+    try {
+        // Bắt đầu giao dịch
+        await database.queryDatabase("START TRANSACTION");
+
+        const results = await database.queryDatabase(query, [name, image, phone, dateOfBirth, sex, userName])
+
+        if (results.affectedRows > 0) {
+
+            const results1 = await database.queryDatabase(querySelect, [userName])
+
+            if (results1.length > 0) {
+                await database.queryDatabase("COMMIT");
+                // Trả về kết quả thành công
+                return { status: "success", user: results1[0] }
+            }
+
+        } else {
+            // Rollback giao dịch nếu có lỗi
+            await database.queryDatabase("ROLLBACK");
+            // Trả về kết quả lỗi và thông điệp lỗi
+            return { status: "ERROR" };
+        }
+
+    } catch (error) {
+        // Rollback giao dịch nếu có lỗi
+        await database.queryDatabase("ROLLBACK");
+        // Trả về kết quả lỗi và thông điệp lỗi
+        return { status: "ERROR", error };
+    }
 
 }
 
@@ -58,5 +88,5 @@ const resetPass = async (userName, password) => {
 module.exports = {
     readUser,
     updateUser,
-    resetPass
+    resetPass,
 };
